@@ -1,0 +1,7 @@
+name: DAG - CENSUS_POP_ESTIMATES (RACE/SEX/AGE) (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCensusPopRaceSexAge.yml@main
+    secrets: inherit

@@ -1,0 +1,10 @@
+name: DAG - ACS_CONDITION (PROD)
+
+# NOTE: This workflow requires pre-cached, ingested ACS files in our GCS landing buckets, (they have names like 2020-HEALTH_INSURANCE_BY_RACE_STATE_NHPI.json). If those files aren't present or might be out of date, please first run the dagAcsConditionPreCache.yml workflow, and then come back to run this workflow. Be mindful of rate limiting on the Census API.
+
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagAcsCondition.yml@main
+    secrets: inherit

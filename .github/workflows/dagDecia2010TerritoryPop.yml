@@ -1,0 +1,7 @@
+name: DAG - DECIA_2010_POPULATION (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagDecia2010TerritoryPop.yml@main
+    secrets: inherit

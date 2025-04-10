@@ -1,0 +1,7 @@
+name: DAG - BJS_INCARCERATION (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagBjsIncarceration.yml@main
+    secrets: inherit

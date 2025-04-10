@@ -1,0 +1,7 @@
+name: DAG - KFF_VACCINATION_STATE (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagKffVaccinationState.yml@main
+    secrets: inherit

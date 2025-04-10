@@ -1,0 +1,7 @@
+name: DAG - VERA_INCARCERATION_COUNTY (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagVeraIncarcerationCounty.yml@main
+    secrets: inherit

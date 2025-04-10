@@ -1,0 +1,7 @@
+name: DAG - CAWP (WOMEN IN GOV) (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCawp.yml@main
+    secrets: inherit

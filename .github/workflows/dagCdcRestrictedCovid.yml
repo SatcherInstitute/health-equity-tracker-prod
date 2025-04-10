@@ -1,0 +1,7 @@
+name: DAG - CDC_RESTRICTED_DATA (COVID) (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCdcRestrictedCovid.yml@main
+    secrets: inherit

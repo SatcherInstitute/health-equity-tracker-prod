@@ -1,0 +1,7 @@
+name: DAG - CDC_VACCINATION_NATIONAL (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCdcVaccinationNational.yml@main
+    secrets: inherit

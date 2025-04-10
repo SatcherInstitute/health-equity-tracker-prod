@@ -1,0 +1,7 @@
+name: DAG - CDC_WISQARS_YOUTH_DATA (GUN DEATHS)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCdcWisqarsYouthGunDeaths.yml@main
+    secrets: inherit

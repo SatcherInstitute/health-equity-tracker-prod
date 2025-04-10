@@ -1,0 +1,7 @@
+name: DAG - CDC_WISQARS_BLACK_MEN_DATA (GUN DEATHS) (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCdcWisqarsBlackMenGunDeaths.yml@main
+    secrets: inherit
