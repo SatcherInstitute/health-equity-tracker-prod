@@ -1,0 +1,6 @@
+gcs_landing_bucket        = "prod-landing-bucket"
+gcs_manual_bucket         = "prod-manual-data-bucket"
+manual_uploads_project_id = "het-infra-prod-f6"
+bq_dataset_name           = "data_sources"
+bq_manual_dataset_name    = "manual_data_sources"
+export_bucket             = "prod-data-tables"
