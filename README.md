@@ -18,7 +18,17 @@ Production data pipelines (DAGs) are triggered from this repository. To run a pi
 ## Getting Started
 For development work, please refer to the main repository. This repository is primarily for production deployment management and running production data pipelines.
 
-When adding new production workflows:
+## When adding new production workflows:
 1. Create your workflow file in the .github/workflows directory
 2. Ensure all required secrets are available in this repository
 3. Test the workflow with a manual trigger before relying on scheduled runs
+
+## Production Release Process
+The production release workflow builds and deploys the Health Equity Tracker to production. It's automatically triggered when a new release is created in the main repository.
+
+## How It Works
+A release in the main repository triggers a dispatch event to this repository
+The releaseToProd.yaml workflow builds all Docker images, pushes them to GCR, and deploys them using Terraform
+
+## Manually Triggering a Release
+Go to Actions → Release to Production → Click "Run workflow" → Enter: Release Version for Production -> Click "Run workflow"
