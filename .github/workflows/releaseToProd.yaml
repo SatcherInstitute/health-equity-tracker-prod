@@ -20,7 +20,7 @@ jobs:
           repository: SatcherInstitute/health-equity-tracker
           ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
       - name: Deploy to Production
-        uses: ./.github/actions/deploy
+        uses: ./.github/actions/buildAllAndDeploy
         with:
           ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
           environment: prod
