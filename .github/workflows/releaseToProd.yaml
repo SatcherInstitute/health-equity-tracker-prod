@@ -3,30 +3,39 @@ on:
   # Auto triggered from health-equity-tracker release
   repository_dispatch:
     types: [release-triggered]
-  # Manual trigger for rollbacks or troubleshooting
+  # Manual trigger for controlled production deployments
   workflow_dispatch:
     inputs:
       release:
-        description: Release Version for Production
+        description: 'Release version to deploy'
         required: true
+      
 jobs:
   deploy:
-    name: Deploy to Production Environment
+    name: Deploy to Production
     runs-on: ubuntu-latest
     steps:
-      - name: Check Out Code
+      - name: Checkout Production Repository
+        uses: actions/checkout@v4
+        with:
+          path: main
+      - name: Checkout HET Repository
         uses: actions/checkout@v4
         with:
           repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
+          ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
+          path: health-equity-tracker
+      - name: Copy Production Config Files
+        run: |
+          # Copy production vars file with the standardized name
+          cp main/config/gcp.tfvars health-equity-tracker/config/
       - name: Deploy to Production
-        uses: ./.github/actions/buildAllAndDeploy
+        uses: ./health-equity-tracker/.github/actions/buildAllAndDeploy
         with:
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
+          ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
           environment: prod
-          terraform-var-file: ../../main/config/prod.tfvars
           deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-          project-id: ${{ secrets.GCP_PROJECT_ID }}
-          tf-state-bucket: het-prod-state
+          project-id: ${{ secrets.PROD_PROJECT_ID }}
+          tf-state-bucket: ${{ secrets.PROD_TF_STATE_BUCKET }}
           ahr-api-key: ${{ secrets.AHR_API_KEY }}
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
