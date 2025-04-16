@@ -1,6 +1,4 @@
-
 name: DEPLOY TO PROD ON RELEASE
-
 on:
   # Auto triggered from health-equity-tracker release
   repository_dispatch:
@@ -11,10 +9,6 @@ on:
       release:
         description: Release Version for Production
         required: true
-      project-id:
-        description: GCP Project for Prod environment
-        default: ${{ secrets.GCP_PROJECT_ID }}
-
 jobs:
   deploy:
     name: Deploy to Production Environment
@@ -25,7 +19,6 @@ jobs:
         with:
           repository: SatcherInstitute/health-equity-tracker
           ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
-
       - name: Deploy to Production
         uses: ./.github/actions/deploy
         with:
@@ -33,7 +26,7 @@ jobs:
           environment: prod
           terraform-var-file: ../../main/config/prod.tfvars
           deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-          project-id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
+          project-id: ${{ secrets.GCP_PROJECT_ID }}
           tf-state-bucket: het-prod-state
           ahr-api-key: ${{ secrets.AHR_API_KEY }}
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
