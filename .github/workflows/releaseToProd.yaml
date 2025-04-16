@@ -1,3 +1,4 @@
+
 name: Release to Production
 
 on:
@@ -15,223 +16,24 @@ on:
         default: het-infra-prod-f6
 
 jobs:
-  build-ingestion:
-    name: Build and Push Data Ingestion Image
-    runs-on: ubuntu-latest
-    outputs:
-      image-digest: ${{ steps.ingestion.outputs.image-digest }}
-    steps:
-      - name: Check Out HET Code
-        uses: actions/checkout@v4
-        with:
-          repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
-          path: health-equity-tracker
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-      - name: Set Up gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
-      - id: ingestion
-        uses: ./health-equity-tracker/.github/actions/buildAndPush
-        with:
-          dockerfile: "health-equity-tracker/run_ingestion/Dockerfile"
-          image-path: "gcr.io/${{ github.event.client_payload.project_id || github.event.inputs.project-id }}/data-ingestion:${{ github.event.client_payload.release || github.event.inputs.release }}"
-          build-directory: ./health-equity-tracker
-
-  build-gcs-to-bq:
-    name: Build and Push GCS-to-BQ Image
-    runs-on: ubuntu-latest
-    outputs:
-      image-digest: ${{ steps.gcs-to-bq.outputs.image-digest }}
-    steps:
-      - name: Check Out HET Code
-        uses: actions/checkout@v4
-        with:
-          repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
-          path: health-equity-tracker
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-      - name: Set Up gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
-      - id: gcs-to-bq
-        uses: ./health-equity-tracker/.github/actions/buildAndPush
-        with:
-          ahr-api-key: ${{ secrets.AHR_API_KEY }}
-          dockerfile: "health-equity-tracker/run_gcs_to_bq/Dockerfile"
-          image-path: "gcr.io/${{ github.event.client_payload.project_id || github.event.inputs.project-id }}/gcs-to-bq:${{ github.event.client_payload.release || github.event.inputs.release }}"
-          build-directory: ./health-equity-tracker
-
-  build-exporter:
-    name: Build and Push Exporter Image
-    runs-on: ubuntu-latest
-    outputs:
-      image-digest: ${{ steps.exporter.outputs.image-digest }}
-    steps:
-      - name: Check Out HET Code
-        uses: actions/checkout@v4
-        with:
-          repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
-          path: health-equity-tracker
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-      - name: Set Up gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
-      - id: exporter
-        uses: ./health-equity-tracker/.github/actions/buildAndPush
-        with:
-          dockerfile: "health-equity-tracker/exporter/Dockerfile"
-          image-path: "gcr.io/${{ github.event.client_payload.project_id || github.event.inputs.project-id }}/exporter:${{ github.event.client_payload.release || github.event.inputs.release }}"
-          build-directory: ./health-equity-tracker
-
-  build-data-server:
-    name: Build and Push Data Server Image
-    runs-on: ubuntu-latest
-    outputs:
-      image-digest: ${{ steps.serving.outputs.image-digest }}
-    steps:
-      - name: Check Out HET Code
-        uses: actions/checkout@v4
-        with:
-          repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
-          path: health-equity-tracker
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-      - name: Set Up gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
-      - id: serving
-        uses: ./health-equity-tracker/.github/actions/buildAndPush
-        with:
-          dockerfile: "health-equity-tracker/data_server/Dockerfile"
-          image-path: "gcr.io/${{ github.event.client_payload.project_id || github.event.inputs.project-id }}/data-server:${{ github.event.client_payload.release || github.event.inputs.release }}"
-          build-directory: ./health-equity-tracker
-
-  build-frontend:
-    name: Build and Push Frontend Image
-    runs-on: ubuntu-latest
-    outputs:
-      image-digest: ${{ steps.frontend.outputs.image-digest }}
-    steps:
-      - name: Check Out HET Code
-        uses: actions/checkout@v4
-        with:
-          repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
-          path: health-equity-tracker
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-      - name: Set Up gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
-      - id: frontend
-        uses: ./health-equity-tracker/.github/actions/buildAndPush
-        with:
-          dockerfile: "health-equity-tracker/frontend_server/Dockerfile"
-          image-path: "gcr.io/${{ github.event.client_payload.project_id || github.event.inputs.project-id }}/frontend:${{ github.event.client_payload.release || github.event.inputs.release }}"
-          deploy-context: "prod"
-          build-directory: ./health-equity-tracker
-
   deploy:
-    name: Deploy to Prod Environment
+    name: Deploy to Production Environment
     runs-on: ubuntu-latest
-    needs:
-      [
-        build-ingestion,
-        build-gcs-to-bq,
-        build-exporter,
-        build-data-server,
-        build-frontend
-      ]
-
     steps:
       - name: Check Out Code
         uses: actions/checkout@v4
         with:
-          path: main
-      - name: Check Out HET Code
-        uses: actions/checkout@v4
-        with:
           repository: SatcherInstitute/health-equity-tracker
-          path: health-equity-tracker
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-      - name: Set Up gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        # Disable wrapper to enable access to terraform output.
-        with:
-          terraform_wrapper: false
-      - name: Save credentials
-        working-directory: health-equity-tracker/config
-        run: |
-          cat > creds.json << EOF
-          ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-          EOF
-      - name: Terraform Init
-        working-directory: health-equity-tracker/config
-        run: |
-          terraform init -backend-config="bucket=het-prod-state" \
-          -backend-config="credentials=creds.json"
-      - name: Terraform Apply
-        id: terraform
-        working-directory: health-equity-tracker/config
-        run: |
-          terraform apply -auto-approve -var-file=../../main/config/prod.tfvars \
-          -var-file=common.tfvars \
-          -var 'gcp_credentials=${{ secrets.PROD_DEPLOYER_SA_KEY }}' \
-          -var 'project_id=${{ github.event.client_payload.project_id || github.event.inputs.project-id }}' \
-          -var 'ingestion_image_digest=${{ needs.build-ingestion.outputs.image-digest }}' \
-          -var 'gcs_to_bq_image_digest=${{ needs.build-gcs-to-bq.outputs.image-digest }}' \
-          -var 'data_server_image_digest=${{ needs.build-data-server.outputs.image-digest }}' \
-          -var 'exporter_image_digest=${{ needs.build-exporter.outputs.image-digest }}' \
-          -var 'frontend_image_digest=${{ needs.build-frontend.outputs.image-digest }}'
+          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
 
-
-          data_server_url=$(terraform output data_server_url)
-          echo "data_server_url=$data_server_url" >> $GITHUB_OUTPUT
-          ingestion_url=$(terraform output ingestion_url)
-          echo "ingestion_url=$ingestion_url" >> $GITHUB_OUTPUT
-          gcs_to_bq_url=$(terraform output gcs_to_bq_url)
-          echo "gcs_to_bq_url=$gcs_to_bq_url" >> $GITHUB_OUTPUT
-          exporter_url=$(terraform output exporter_url)
-          echo "exporter_url=$exporter_url" >> $GITHUB_OUTPUT
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Deploy to Production
+        uses: ./.github/actions/deploy
         with:
-          python-version: 3.12
-      - name: Run E2E Tests
-        working-directory: health-equity-tracker
-        run: |
-          pip install -r e2e_tests/requirements.txt
-          python e2e_tests/data_serving.py || code=$?; if [[ $code -ne 0 ]]; then exit $code; fi
-        env:
-          SERVICE_URL: ${{ steps.terraform.outputs.data_server_url }}
-          PATH_TO_SA_CREDS: config/creds.json
-          AHR_API_KEY: ${{ secrets.AHR_API_KEY }}
+          ref: ${{ github.event.client_payload.release || github.event.inputs.release }}
+          environment: prod
+          terraform-var-file: ../../main/config/prod.tfvars
+          deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
+          project-id: ${{ github.event.client_payload.project_id || github.event.inputs.project-id }}
+          tf-state-bucket: het-prod-state
+          ahr-api-key: ${{ secrets.AHR_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
