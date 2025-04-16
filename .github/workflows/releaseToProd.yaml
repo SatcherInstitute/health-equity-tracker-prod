@@ -151,8 +151,6 @@ jobs:
           image-path: "gcr.io/${{ github.event.client_payload.project_id || github.event.inputs.project-id }}/frontend:${{ github.event.client_payload.release || github.event.inputs.release }}"
           deploy-context: "prod"
           build-directory: ./health-equity-tracker
-          basic-auth-username: ${{ secrets.BASIC_AUTH_USERNAME }}
-          basic-auth-password: ${{ secrets.BASIC_AUTH_PASSWORD }}
 
   deploy:
     name: Deploy to Prod Environment
