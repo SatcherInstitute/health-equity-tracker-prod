@@ -1,5 +1,5 @@
 
-name: Release to Production
+name: DEPLOY TO PROD ON RELEASE
 
 on:
   # Auto triggered from health-equity-tracker release
@@ -13,7 +13,7 @@ on:
         required: true
       project-id:
         description: GCP Project for Prod environment
-        default: het-infra-prod-f6
+        default: ${{ secrets.GCP_PROJECT_ID }}
 
 jobs:
   deploy:
