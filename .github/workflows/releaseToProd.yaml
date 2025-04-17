@@ -33,7 +33,7 @@ jobs:
           cp health-equity-tracker-prod/config/gcp.tfvars health-equity-tracker/config/
 
       - name: Deploy to Production
-        uses: SatcherInstitute/health-equity-tracker/.github/actions/buildAllAndDeploy
+        uses: SatcherInstitute/health-equity-tracker/.github/actions/buildAllAndDeploy@main
         with:
           ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
           environment: prod
