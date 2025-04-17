@@ -2,8 +2,8 @@ name: Release to Production (Older Version)
 
 on:
   # Auto triggered from health-equity-tracker release
-  repository_dispatch:
-    types: [release-triggered]
+  #repository_dispatch:
+  #  types: [release-triggered]
   # Manual trigger for rollbacks or troubleshooting
   workflow_dispatch:
     inputs:
