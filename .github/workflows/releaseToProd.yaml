@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: 'Release version to deploy'
+        description: "Release version to deploy"
         required: true
-      
+
 jobs:
   deploy:
     name: Deploy to Production
@@ -18,24 +18,26 @@ jobs:
       - name: Checkout Production Repository
         uses: actions/checkout@v4
         with:
-          path: main
+          path: health-equity-tracker-prod
+
       - name: Checkout HET Repository
         uses: actions/checkout@v4
         with:
           repository: SatcherInstitute/health-equity-tracker
           ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
           path: health-equity-tracker
+
       - name: Copy Production Config Files
         run: |
-          # Copy production vars file with the standardized name
-          cp main/config/gcp.tfvars health-equity-tracker/config/
+          # Copy production vars file to the HET repo
+          cp health-equity-tracker-prod/config/gcp.tfvars health-equity-tracker/config/
+
       - name: Deploy to Production
-        uses: SatcherInstitute/health-equity-tracker/.github/actions/buildAllAndDeploy@main
+        uses: ./health-equity-tracker/.github/actions/buildAllAndDeploy
         with:
           ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
           environment: prod
           deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
-          project-id: ${{ secrets.PROD_PROJECT_ID }}
-          tf-state-bucket: ${{ secrets.PROD_TF_STATE_BUCKET }}
-          ahr-api-key: ${{ secrets.AHR_API_KEY }}
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          project-id: ${{ secrets.GCP_PROJECT_ID }}
+          tf-state-bucket: het-prod-state
+          ahr-api-key: 12345
