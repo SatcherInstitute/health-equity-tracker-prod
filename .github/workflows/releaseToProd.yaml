@@ -1,15 +1,8 @@
-name: DEPLOY TO PROD ON RELEASE
+name: AUTO-DEPLOY TO PROD ON HET RELEASE
 on:
   # Auto triggered from health-equity-tracker release
   repository_dispatch:
     types: [release-triggered]
-  # Manual trigger for controlled production deployments
-  workflow_dispatch:
-    inputs:
-      release:
-        description: "Release version to deploy"
-        required: true
-
 jobs:
   deploy:
     name: Deploy to Production
@@ -19,22 +12,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SatcherInstitute/health-equity-tracker
-          ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
-
+          ref: ${{ github.event.client_payload.release }}
       - name: Checkout Production Repository
         uses: actions/checkout@v4
         with:
           path: prod
-
       - name: Copy Production Config Files
         run: |
           # Copy production vars file to the HET repo
           cp prod/config/gcp.tfvars config/
-
       - name: Deploy to Production
         uses: SatcherInstitute/health-equity-tracker/.github/actions/buildAllAndDeploy@main
         with:
-          ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
+          ref: ${{ github.event.client_payload.release }}
           environment: prod
           deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
           project-id: ${{ secrets.GCP_PROJECT_ID }}
