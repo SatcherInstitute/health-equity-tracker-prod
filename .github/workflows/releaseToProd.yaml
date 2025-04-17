@@ -30,7 +30,7 @@ jobs:
           # Copy production vars file with the standardized name
           cp main/config/gcp.tfvars health-equity-tracker/config/
       - name: Deploy to Production
-        uses: health-equity-tracker/.github/actions/buildAllAndDeploy@main
+        uses: SatcherInstitute/health-equity-tracker/.github/actions/buildAllAndDeploy@main
         with:
           ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
           environment: prod
