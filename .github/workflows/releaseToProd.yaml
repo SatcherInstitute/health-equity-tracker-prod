@@ -18,19 +18,18 @@ jobs:
       - name: Checkout Production Repository
         uses: actions/checkout@v4
         with:
-          path: health-equity-tracker-prod
+          path: prod
 
       - name: Checkout HET Repository
         uses: actions/checkout@v4
         with:
           repository: SatcherInstitute/health-equity-tracker
           ref: ${{ github.event.inputs.release || github.event.client_payload.release }}
-          path: health-equity-tracker
 
       - name: Copy Production Config Files
         run: |
           # Copy production vars file to the HET repo
-          cp health-equity-tracker-prod/config/gcp.tfvars health-equity-tracker/config/
+          cp prod/config/gcp.tfvars config/
 
       - name: Deploy to Production
         uses: SatcherInstitute/health-equity-tracker/.github/actions/buildAllAndDeploy@main
@@ -40,4 +39,4 @@ jobs:
           deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
           project-id: ${{ secrets.GCP_PROJECT_ID }}
           tf-state-bucket: het-prod-state
-          ahr-api-key: 12345
+          ahr-api-key: TODO_MAKE_THIS_OPTIONAL
