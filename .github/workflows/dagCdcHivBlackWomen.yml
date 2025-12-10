@@ -1,0 +1,7 @@
+name: DAG - CDC_HIV_BLACK_WOMEN_DATA (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagCdcHivBlackWomen.yml@main
+    secrets: inherit
