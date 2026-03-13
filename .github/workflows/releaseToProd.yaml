@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout HET Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: SatcherInstitute/health-equity-tracker
           ref: ${{ github.event.client_payload.release }}
       - name: Checkout Production Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: prod
       - name: Copy Production Config Files
