@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.release }}
           environment: prod
-          deployer-sa-key: ${{ secrets.PROD_DEPLOYER_SA_KEY }}
+          deployer-sa-key: ${{ secrets.DEPLOYER_SA_KEY }}
           project-id: ${{ secrets.GCP_PROJECT_ID }}
           tf-state-bucket: het-prod-state
           ahr-api-key: TODO_MAKE_THIS_OPTIONAL
