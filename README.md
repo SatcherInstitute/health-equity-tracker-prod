@@ -1,6 +1,9 @@
 # Health Equity Tracker - Production
 This repository contains the production deployment configuration and resources for the [Health Equity Tracker](https://healthequitytracker.org/) project. It serves as an extension of the main [Health Equity Tracker development repository](https://github.com/SatcherInstitute/health-equity-tracker).
 
+## Release Status
+[![AUTO-DEPLOY TO PROD ON HET RELEASE](https://github.com/SatcherInstitute/health-equity-tracker-prod/actions/workflows/releaseToProd.yaml/badge.svg)](https://github.com/SatcherInstitute/health-equity-tracker-prod/actions/workflows/releaseToProd.yaml)
+
 ## Purpose
 This repository manages production-specific configurations, deployment workflows, and resources required for the live Health Equity Tracker application. By separating production concerns from the main development repository, we:
 1. Manage Resources Efficiently: Prevent exhausting GitHub Actions credits on private repositories
