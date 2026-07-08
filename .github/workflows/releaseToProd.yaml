@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout HET Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: SatcherInstitute/health-equity-tracker
           ref: ${{ github.event.client_payload.release }}
       - name: Checkout Production Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: prod
       - name: Copy Production Config Files
@@ -29,6 +29,5 @@ jobs:
           deployer-sa-key: ${{ secrets.DEPLOYER_SA_KEY }}
           project-id: ${{ secrets.GCP_PROJECT_ID }}
           tf-state-bucket: het-prod-state
-          ahr-api-key: TODO_MAKE_THIS_OPTIONAL
-          webflow-api-token: ${{ secrets.WEBFLOW_API_TOKEN }}
-          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Runtime secrets (ahr-api-key, anthropic-api-key, webflow-api-token) are
+          # read from Secret Manager by Cloud Run; they are no longer action inputs.
