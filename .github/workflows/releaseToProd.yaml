@@ -29,5 +29,6 @@ jobs:
           deployer-sa-key: ${{ secrets.DEPLOYER_SA_KEY }}
           project-id: ${{ secrets.GCP_PROJECT_ID }}
           tf-state-bucket: het-prod-state
+          sentry-auth-token: ${{ secrets.SENTRY_AUTH_TOKEN }}
           # Runtime secrets (ahr-api-key, anthropic-api-key, webflow-api-token) are
           # read from Secret Manager by Cloud Run; they are no longer action inputs.
