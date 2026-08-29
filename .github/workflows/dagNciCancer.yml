@@ -1,0 +1,7 @@
+name: DAG - NCI_CANCER (PROD)
+on:
+  workflow_dispatch:
+jobs:
+  call-staging-workflow:
+    uses: SatcherInstitute/health-equity-tracker/.github/workflows/dagNciCancer.yml@main
+    secrets: inherit
